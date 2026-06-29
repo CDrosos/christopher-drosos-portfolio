@@ -1,0 +1,23 @@
+import type { Website } from '../types/website';
+
+export const fallbackWebsites: Website[] = [
+  { name: 'athena.market', url: 'https://athena.market', type: ['Supermarket Profile'] },
+  { name: 'mrwood.gr', url: 'http://mrwood.gr', type: ['Portfolio', 'E-shop'] },
+  { name: 'kidfinity.gr', url: 'https://kidfinity.gr/', type: ['E-shop'] },
+  { name: 'forevertravel.gr', url: 'https://forevertravel.gr/', type: ['Travel Agency'] },
+  { name: 'ti-lead.com', url: 'https://ti-lead.com/', type: ['Company'] },
+  { name: 'cosmonrg.gr', url: 'https://cosmonrg.gr/', type: ['Company'] },
+  { name: 'persianlux.gr', url: 'https://www.persianlux.gr/', type: ['Company'] },
+  { name: 'smartplus.gr', url: 'https://smartplus.gr/', type: ['Company'] },
+  { name: 'geogenesis.gr', url: 'https://geogenesis.gr/', type: ['Company'] },
+  { name: 'cactus-showroom.gr', url: 'https://cactus-showroom.gr/', type: ['E-shop'] },
+  { name: 'cactus-eshop.gr', url: 'https://cactus-eshop.gr/', type: ['E-shop'] },
+  { name: 'alkodi.gr', url: 'https://alkodi.gr/', type: ['Company'] },
+  { name: 'aiolosapartments.gr', url: 'https://aiolosapartments.gr/', type: ['Rooms to let'] },
+  { name: 'joannasboutique.gr', url: 'https://joannasboutique.gr/', type: ['E-shop'] },
+  { name: 'dreamnet.gr', url: 'https://dreamnet.gr/', type: ['Company'] },
+  { name: 'polys-jewelry.com', url: 'http://polys-jewelry.com/', type: ['E-shop'] },
+  { name: 'tkmusicstudies.gr', url: 'https://tkmusicstudies.gr/', isDead: true, type: ['Company'] },
+  { name: 'markat.gr', url: 'http://markat.gr', isDead: true, type: ['Company'] },
+  { name: 'christinaantoniou.gr', url: 'https://christinaantoniou.gr/', isDead: true, type: ['Company'] },
+];

@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Smartphone, Globe, Code2, ExternalLink, Linkedin, Gamepad2, Layers } from 'lucide-react';
+import { fallbackWebsites } from './data/fallback-websites';
+import { fetchPortfolioSites } from './lib/portfolio-sites';
+import { pingBackendFromPortfolio } from './lib/keepalive';
+import type { Website } from './types/website';
 
 const apps = [
   {
@@ -28,28 +32,6 @@ const apps = [
   }
 ];
 
-const websites = [
-  { name: 'athena.market', url: 'https://athena.market', type: ['Supermarket Profile'] },
-  { name: 'mrwood.gr', url: 'http://mrwood.gr', type: ['Portfolio', 'E-shop'] },
-  { name: 'kidfinity.gr', url: 'https://kidfinity.gr/', type: ['E-shop'] },
-  { name: 'forevertravel.gr', url: 'https://forevertravel.gr/', type: ['Travel Agency'] },
-  { name: 'ti-lead.com', url: 'https://ti-lead.com/', type: ['Company'] },
-  { name: 'cosmonrg.gr', url: 'https://cosmonrg.gr/', type: ['Company'] },
-  { name: 'persianlux.gr', url: 'https://www.persianlux.gr/', type: ['Company'] },
-  { name: 'smartplus.gr', url: 'https://smartplus.gr/', type: ['Company'] },
-  { name: 'geogenesis.gr', url: 'https://geogenesis.gr/', type: ['Company'] },
-  { name: 'cactus-showroom.gr', url: 'https://cactus-showroom.gr/', type: ['E-shop'] },
-  { name: 'cactus-eshop.gr', url: 'https://cactus-eshop.gr/', type: ['E-shop'] },
-  { name: 'alkodi.gr', url: 'https://alkodi.gr/', type: ['Company'] },
-  { name: 'aiolosapartments.gr', url: 'https://aiolosapartments.gr/', type: ['Rooms to let'] },
-  { name: 'joannasboutique.gr', url: 'https://joannasboutique.gr/', type: ['E-shop'] },
-  { name: 'dreamnet.gr', url: 'https://dreamnet.gr/', type: ['Company'] },
-  { name: 'polys-jewelry.com', url: 'http://polys-jewelry.com/', type: ['E-shop'] },
-  { name: 'tkmusicstudies.gr', url: 'https://tkmusicstudies.gr/', isDead: true, type: ['Company'] },
-  { name: 'markat.gr', url: 'http://markat.gr', isDead: true, type: ['Company'] },
-  { name: 'christinaantoniou.gr', url: 'https://christinaantoniou.gr/', isDead: true, type: ['Company'] }
-];
-
 const codeExamples = [
   {
     title: 'dotNet_Assignments (GitLab)',
@@ -65,7 +47,7 @@ const codeExamples = [
   }
 ];
 
-const ScreenshotCard = ({ web }: { web: { name: string, url: string, isDead?: boolean, type: string[] } }) => {
+const ScreenshotCard = ({ web }: { web: Website }) => {
   const [loaded, setLoaded] = useState(false);
   const [timedOut, setTimedOut] = useState(false);
 
@@ -192,7 +174,17 @@ const AppCard = ({ app, index }: { app: { title: string, desc: string, tech: str
 };
 
 function App() {
+  const [websites, setWebsites] = useState<Website[]>(fallbackWebsites);
   const [websiteFilter, setWebsiteFilter] = useState('All');
+
+  useEffect(() => {
+    void (async () => {
+      await pingBackendFromPortfolio();
+      const { sites } = await fetchPortfolioSites();
+      setWebsites(sites);
+    })();
+  }, []);
+
   const allCategories = ['All', ...Array.from(new Set(websites.flatMap(w => w.type)))].sort();
   const filteredWebsites = websiteFilter === 'All' 
     ? websites 

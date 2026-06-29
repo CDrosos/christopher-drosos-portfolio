@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Activity, CheckCircle2, Home, Loader2, RefreshCw, XCircle } from 'lucide-react';
+import { Activity, CheckCircle2, Globe, Home, Loader2, RefreshCw, XCircle } from 'lucide-react';
 import { daysSince, getLocalLastPing, runKeepalive, type KeepaliveResult } from '../lib/keepalive';
 import { isInsforgeConfigured } from '../lib/insforge';
 
@@ -38,9 +38,18 @@ export default function PingPage() {
           <div>
             <h1 className="text-3xl font-bold text-white">InsForge Keepalive</h1>
             <p className="text-slate-400 mt-1">
-              Visit this page once a week so your free InsForge project stays active.
+              This page talks to the InsForge backend and database so the free project stays active.
             </p>
           </div>
+        </div>
+
+        <div className="rounded-2xl border border-cyan-900/30 bg-cyan-950/20 p-5 text-sm text-cyan-100/90 mb-6">
+          <p className="font-semibold text-cyan-300 mb-2">Why the warning still appeared</p>
+          <p className="text-cyan-100/80">
+            Opening only the portfolio homepage does not count as backend activity. InsForge pauses free projects after
+            ~7 days without API/database usage on <code className="text-cyan-200">*.insforge.app</code>. This page and
+            the portfolio now load sites from the database on every visit.
+          </p>
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 mb-6">
@@ -48,7 +57,7 @@ export default function PingPage() {
             <div>
               <p className="text-sm uppercase tracking-wider text-slate-500 font-semibold">Status</p>
               <p className="text-xl font-semibold text-white mt-1">
-                {loading ? 'Running keepalive...' : result?.ok ? 'Project is active' : 'Action needed'}
+                {loading ? 'Running keepalive...' : result?.ok ? 'Backend is active' : 'Action needed'}
               </p>
             </div>
             <button
@@ -79,11 +88,44 @@ export default function PingPage() {
             {loading && (
               <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-slate-400">
                 <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Contacting InsForge backend and database...</span>
+                <span>Calling backend health, portfolio stats, and database keepalive...</span>
               </div>
             )}
           </div>
         </div>
+
+        {result?.stats && (
+          <div className="rounded-2xl border border-fuchsia-900/40 bg-fuchsia-950/20 p-5 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Globe className="w-5 h-5 text-fuchsia-400" />
+              <p className="font-semibold text-fuchsia-200">Portfolio database snapshot</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3 mb-4">
+              <div>
+                <p className="text-xs text-slate-500 uppercase">Total sites</p>
+                <p className="text-2xl font-bold text-white">{result.stats.totalSites}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 uppercase">Active</p>
+                <p className="text-2xl font-bold text-emerald-400">{result.stats.activeSites}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500 uppercase">Offline</p>
+                <p className="text-2xl font-bold text-amber-400">{result.stats.offlineSites}</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(result.stats.categoryCounts).map(([category, count]) => (
+                <span
+                  key={category}
+                  className="px-2 py-1 rounded-md bg-slate-900/80 border border-slate-800 text-xs text-slate-300"
+                >
+                  {category}: {count}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid gap-4 sm:grid-cols-2 mb-6">
           <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
@@ -99,7 +141,7 @@ export default function PingPage() {
             <p className={`text-lg font-semibold mt-2 ${daysSinceLastPing !== null && daysSinceLastPing >= 6 ? 'text-amber-400' : 'text-white'}`}>
               {daysSinceLastPing === null ? '—' : `${daysSinceLastPing} day${daysSinceLastPing === 1 ? '' : 's'}`}
             </p>
-            <p className="text-xs text-slate-500 mt-2">Free projects pause after ~7 days of inactivity.</p>
+            <p className="text-xs text-slate-500 mt-2">Visit every 5–6 days, or rely on daily auto-pings.</p>
           </div>
         </div>
 
@@ -108,7 +150,7 @@ export default function PingPage() {
             <p className="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-3">Recent pings</p>
             <ul className="space-y-2 text-sm">
               {result.recentPings.map((ping) => (
-                <li key={ping.pinged_at} className="flex justify-between gap-4 text-slate-300">
+                <li key={`${ping.pinged_at}-${ping.source}`} className="flex justify-between gap-4 text-slate-300">
                   <span>{new Date(ping.pinged_at).toLocaleString()}</span>
                   <span className="text-slate-500">{ping.source}</span>
                 </li>
@@ -117,19 +159,10 @@ export default function PingPage() {
           </div>
         ) : null}
 
-        <div className="rounded-2xl border border-amber-900/40 bg-amber-950/20 p-5 text-sm text-amber-100/90 mb-8">
-          <p className="font-semibold text-amber-300 mb-2">If the project is paused</p>
-          <ol className="list-decimal list-inside space-y-1 text-amber-100/80">
-            <li>Open your <a className="underline hover:text-white" href="https://insforge.dev/dashboard/project/a4284b91-72a3-4e56-a2a3-768a510d8051" target="_blank" rel="noreferrer">InsForge dashboard</a> if the project shows as paused.</li>
-            <li>Run the SQL in <code className="text-amber-200">insforge/schema.sql</code> via Database Studio.</li>
-            <li>Set <code className="text-amber-200">VITE_INSFORGE_URL</code> and <code className="text-amber-200">VITE_INSFORGE_ANON_KEY</code> in <code className="text-amber-200">.env</code>.</li>
-            <li>Reload this page to record a new keepalive ping.</li>
-          </ol>
-        </div>
-
         {!isInsforgeConfigured && (
           <div className="rounded-2xl border border-rose-900/40 bg-rose-950/20 p-5 text-sm text-rose-100/90 mb-8">
-            InsForge environment variables are not configured. Copy <code className="text-rose-200">.env.example</code> to <code className="text-rose-200">.env</code> and fill in your project URL and anon key from the InsForge dashboard.
+            Backend env vars are missing from this deployment build. Set deployment env vars and redeploy so this page
+            can reach the InsForge API.
           </div>
         )}
 
