@@ -1,0 +1,41 @@
+name: InsForge Keep-Alive
+
+# External pinger for christopher-drosos-portfolio-v2.
+# Internal InsForge schedules help while the project is live, but Free-tier pause
+# needs external requests to the public backend host. Once paused, only dashboard Restore works.
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping backend health
+        run: |
+          set -euo pipefail
+          curl -fsS --retry 3 --retry-delay 5 \
+            "https://t75mmygz.eu-central.insforge.app/api/health"
+          echo
+
+      - name: Ping keep-alive function
+        run: |
+          set -euo pipefail
+          BODY=$(curl -fsS --retry 3 --retry-delay 5 \
+            -H "Accept: application/json" \
+            "https://t75mmygz.eu-central.insforge.app/functions/keepalive?source=github-actions&format=json")
+          echo "$BODY"
+          echo "$BODY" | grep -q '"ok": true'
+
+      - name: Ping public /ping rewrite
+        run: |
+          set -euo pipefail
+          CODE=$(curl -sS -o /tmp/ping.html -w "%{http_code}" --retry 3 --retry-delay 5 \
+            "https://christopher-drosos-portfolio.insforge.site/ping?source=github-actions")
+          echo "HTTP $CODE"
+          test "$CODE" = "200"
+          grep -q "LIVE" /tmp/ping.html

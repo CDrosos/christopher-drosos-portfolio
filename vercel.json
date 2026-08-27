@@ -1,5 +1,16 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/ping",
+      "destination": "https://t75mmygz.eu-central.insforge.app/functions/keepalive"
+    },
+    {
+      "source": "/ping/",
+      "destination": "https://t75mmygz.eu-central.insforge.app/functions/keepalive"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
