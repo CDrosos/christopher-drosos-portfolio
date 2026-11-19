@@ -1,6 +1,8 @@
 import type { Website } from '../types/website';
 
 export const fallbackWebsites: Website[] = [
+  { name: 'fitway.gr', url: 'https://fitway.gr/', type: ['E-shop'] },
+  { name: 'djweddinggreece.com', url: 'https://djweddinggreece.com/', type: ['Company'] },
   { name: 'athena.market', url: 'https://athena.market', type: ['Supermarket Profile'] },
   { name: 'mrwood.gr', url: 'http://mrwood.gr', type: ['Portfolio', 'E-shop'] },
   { name: 'kidfinity.gr', url: 'https://kidfinity.gr/', type: ['E-shop'] },
@@ -13,10 +15,16 @@ export const fallbackWebsites: Website[] = [
   { name: 'cactus-showroom.gr', url: 'https://cactus-showroom.gr/', type: ['E-shop'] },
   { name: 'cactus-eshop.gr', url: 'https://cactus-eshop.gr/', type: ['E-shop'] },
   { name: 'alkodi.gr', url: 'https://alkodi.gr/', type: ['Company'] },
+  { name: 'alkodieshop.gr', url: 'https://alkodieshop.gr/', type: ['E-shop'] },
   { name: 'aiolosapartments.gr', url: 'https://aiolosapartments.gr/', type: ['Rooms to let'] },
   { name: 'joannasboutique.gr', url: 'https://joannasboutique.gr/', type: ['E-shop'] },
+  { name: 'herbal4u.gr', url: 'https://herbal4u.gr/', type: ['E-shop'] },
   { name: 'dreamnet.gr', url: 'https://dreamnet.gr/', type: ['Company'] },
   { name: 'polys-jewelry.com', url: 'http://polys-jewelry.com/', type: ['E-shop'] },
+  { name: 'syndrasitherapy.gr', url: 'https://syndrasitherapy.gr/', type: ['Company'] },
+  { name: 'simiostirixis.gr', url: 'https://simiostirixis.gr/', type: ['Company'] },
+  { name: 'ems20minutes.gr', url: 'http://ems20minutes.gr/', type: ['Company'] },
+  { name: 'gialourisgroup.gr', url: 'https://gialourisgroup.gr/', type: ['Company'] },
   { name: 'tkmusicstudies.gr', url: 'https://tkmusicstudies.gr/', isDead: true, type: ['Company'] },
   { name: 'markat.gr', url: 'http://markat.gr', isDead: true, type: ['Company'] },
   { name: 'christinaantoniou.gr', url: 'https://christinaantoniou.gr/', isDead: true, type: ['Company'] },
