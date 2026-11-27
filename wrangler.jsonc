@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "christopher-drosos-portfolio",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "upload_source_maps": true,
+  // functions/keepalive.ts is the InsForge (Deno) edge function. It is not a
+  // Cloudflare Pages Function and is not bundled into this Worker.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    // Browser navigations skip the Worker on compatibility dates >= 2025-04-01
+    // unless the path is listed here. Both spellings match the old vercel.json
+    // rewrites so /ping never falls through to the SPA shell.
+    "run_worker_first": ["/ping", "/ping/"]
+  },
+  "vars": {
+    "KEEPALIVE_URL": "https://t75mmygz.eu-central.insforge.app/functions/keepalive"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  }
+}

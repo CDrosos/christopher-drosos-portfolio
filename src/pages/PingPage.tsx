@@ -32,8 +32,9 @@ export default function PingPage() {
   const lastUpdated = result?.lastPingAt ? new Date(result.lastPingAt) : null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans">
-      <div className="max-w-3xl mx-auto px-6 py-16">
+    <div className="min-h-screen bg-slate-950 font-sans text-slate-200">
+      <div className="h-px bg-gradient-to-r from-cyan-400/0 via-cyan-300/80 to-fuchsia-400/80" />
+      <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <div className="text-center mb-10">
           <div className="inline-flex p-4 rounded-2xl bg-fuchsia-900/30 text-fuchsia-400 mb-5">
             <Globe className="w-10 h-10" />
@@ -166,14 +167,14 @@ export default function PingPage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <a
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-medium transition-colors"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-fuchsia-600 px-6 py-3 font-medium text-white transition-colors hover:bg-fuchsia-500"
           >
             <Home className="w-4 h-4" />
             View full portfolio
           </a>
         </div>
 
-        <p className="text-center text-xs text-slate-600 mt-10">
+        <p className="mt-10 text-center text-sm text-slate-400">
           Christopher P. Drosos — Software Developer
         </p>
       </div>
