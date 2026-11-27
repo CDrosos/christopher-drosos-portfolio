@@ -21,12 +21,6 @@ export function getLocalLastPing(): string | null {
   return localStorage.getItem(LOCAL_LAST_PING_KEY);
 }
 
-export function daysSince(isoDate: string | null): number | null {
-  if (!isoDate) return null;
-  const diffMs = Date.now() - new Date(isoDate).getTime();
-  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
-}
-
 async function checkHealth(): Promise<KeepaliveStep> {
   const baseUrl = getInsforgeBaseUrl();
 

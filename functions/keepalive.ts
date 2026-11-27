@@ -1,4 +1,6 @@
 /**
+ * InsForge edge function (Deno). Deployed on InsForge, not as a Cloudflare
+ * Pages Function — the portfolio Worker only proxies /ping here.
  * Keep-alive for InsForge Free-tier pause prevention.
  * UptimeRobot does not execute JS — this endpoint must do real backend work on GET.
  */
